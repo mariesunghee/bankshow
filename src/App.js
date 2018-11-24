@@ -42,6 +42,27 @@ class App extends Component {
         })
     }
 
+    handlePreviousClick=()=>{
+        if(this.state.currentPage>1) {
+            this.setState({
+                currentPage: this.state.currentPage -1
+            })
+        }
+    }
+    handleNextClick=(totalPage)=>{
+        if(this.state.currentPage<totalPage) {
+            this.setState({
+                currentPage: this.state.currentPage +1
+            })
+        }
+    }
+
+    handlePageClick=(pageNumber)=>{
+        this.setState({
+            currentPage: pageNumber
+        })
+    }
+
     render() {
         const filterData = this.state.parsedData.filter((transection)=>{
             return transection[1].toLowerCase().indexOf(this.state.searchedText) > -1
@@ -64,6 +85,18 @@ class App extends Component {
             }
         });
 
+        const pageStart=(this.state.currentPage-1)*this.state.pageSize;
+        const pageEnd=pageStart+this.state.pageSize;
+
+        const pagedData = sortedData.slice(pageStart,pageEnd);
+        const totalPages= Math.ceil(sortedData.length/this.state.pageSize);
+        const pageElements =[]
+
+
+
+        for(let i=0;i<totalPages;i++){
+               pageElements.push(<li key={i} className="page-item"><a style={{background: this.state.currentPage===i+1 ?"gray":""}} onClick={()=>this.handlePageClick(i+1)} className="page-link" >{i+1}</a></li>)
+           }
         return (
             <div className="App">
                 <input type="file" onChange={this.handleFileChange}/>
@@ -90,9 +123,9 @@ class App extends Component {
                     </thead>
                     <tbody>
                     {
-                        sortedData.map((transection, index) => {
+                        pagedData.map((transection, index) => {
                             return <tr key={index}>
-                                <td>{index + 1}</td>
+                                <td>{pageStart+index+1}</td>
                                 <td>{transection[0]}</td>
                                 <td>{transection[1]}</td>
                                 <td>{transection[2]}</td>
@@ -105,16 +138,14 @@ class App extends Component {
                 </table>
             <ul className="pagination justify-content-center">
                 <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
+                    <a className="page-link" onClick={this.handlePreviousClick} aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                         <span className="sr-only">Previous</span>
                     </a>
                 </li>
-                <li className="page-item"><a className="page-link" href="#">1</a></li>
-                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                <li className="page-item"><a className="page-link" href="#">3</a></li>
+                {pageElements}
                 <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
+                    <a className="page-link" onClick={()=>this.handleNextClick(totalPages)} aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                         <span className="sr-only">Next</span>
                     </a>
