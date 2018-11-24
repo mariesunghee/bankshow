@@ -7,7 +7,9 @@ class App extends Component {
         parsedData: [],
         sortFieldIndex: 0,
         isAscending: true,
-        searchedText:""
+        searchedText:"",
+        pageSize:10,
+        currentPage:1
     }
     handleFileChange = (e) => {
         const file = e.target.files[0];
@@ -31,6 +33,12 @@ class App extends Component {
         const value = e.target.value.toLowerCase()
         this.setState({
             searchedText: value
+        })
+    }
+    handlePageSizeChange=(e)=>{
+        const newPageSize = e.target.value
+        this.setState({
+            pageSize: newPageSize
         })
     }
 
@@ -95,7 +103,30 @@ class App extends Component {
                     }
                     </tbody>
                 </table>
-
+            <ul className="pagination justify-content-center">
+                <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span className="sr-only">Previous</span>
+                    </a>
+                </li>
+                <li className="page-item"><a className="page-link" href="#">1</a></li>
+                <li className="page-item"><a className="page-link" href="#">2</a></li>
+                <li className="page-item"><a className="page-link" href="#">3</a></li>
+                <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span className="sr-only">Next</span>
+                    </a>
+                </li>
+            </ul>
+                <select onChange={this.handlePageSizeChange}>
+                    <option defaultValue={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={25}>25</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                </select>
             </div>
 
         );
