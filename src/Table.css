@@ -1,0 +1,10 @@
+.pagination{
+    font-size: 16px;
+}
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+.page-link {
+    color: gray;
+}
+

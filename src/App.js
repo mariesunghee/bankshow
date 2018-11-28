@@ -28,7 +28,7 @@ class App extends Component {
     }
 
     render() {
-        const filterData = this.state.parsedData.filter((transection)=>{
+        const fiteredData = this.state.parsedData.filter((transection)=>{
             return transection[1].toLowerCase().indexOf(this.state.searchedText) > -1
         });
 
